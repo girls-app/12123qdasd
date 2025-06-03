@@ -106,7 +106,69 @@ const EscortOrdersApp = () => {
     );
   }
 
+  
+if (isAdmin) {
   return (
+    <div style={{ minHeight: "100vh", padding: "20px", backgroundColor: "#111", color: "#fff" }}>
+      <h1 style={{ marginBottom: "20px" }}>Админ-панель</h1>
+
+      <button
+        onClick={() => {
+          const geo = prompt("Гео (например, ЯПОНИЯ, ТОКИО)");
+          const description = prompt("Описание");
+          const type = prompt("Типаж");
+          const duration = prompt("Время (например, 2 часа)");
+          const pay = prompt("Гонорар (например, 600$ чистыми)");
+          if (!geo || !description || !type || !duration || !pay) return;
+          const newTheme = { geo, text: description, type, duration, pay };
+          const updatedThemes = [...themes, newTheme];
+          setThemes(updatedThemes);
+          localStorage.setItem("themes", JSON.stringify(updatedThemes));
+        }}
+        style={{ padding: "10px 20px", marginBottom: "30px", backgroundColor: "#333", color: "#fff", border: "none", borderRadius: "6px" }}
+      >
+        ➕ Добавить тему
+      </button>
+
+      <h2>📄 Все темы</h2>
+      {themes.map((theme, idx) => (
+        <div key={idx} style={{ border: "1px solid #444", padding: "10px", marginBottom: "10px", borderRadius: "6px" }}>
+          <p><strong>Гео:</strong> {theme.geo}</p>
+          <p><strong>Описание:</strong> {theme.text}</p>
+          <p><strong>Типаж:</strong> {theme.type}</p>
+          <p><strong>Время:</strong> {theme.duration}</p>
+          <p><strong>Гонорар:</strong> {theme.pay}</p>
+          <button
+            onClick={() => {
+              const updated = themes.filter((_, i) => i !== idx);
+              setThemes(updated);
+              localStorage.setItem("themes", JSON.stringify(updated));
+            }}
+            style={{ marginTop: "10px", backgroundColor: "#aa0000", color: "#fff", padding: "5px 10px", border: "none", borderRadius: "4px" }}
+          >
+            Закрыть тему
+          </button>
+        </div>
+      ))}
+
+      <h2>📥 Отклики</h2>
+      <ul>
+        {responses.map((resp, i) => (
+          <li key={i} style={{ marginBottom: "8px" }}>
+            <strong>Тема:</strong> {resp.theme}<br />
+            <strong>Код:</strong> {resp.code}
+          </li>
+        ))}
+      </ul>
+
+      <button onClick={handleLogout} style={{ marginTop: "30px", padding: "10px", backgroundColor: "#444", color: "#fff" }}>
+        Выйти
+      </button>
+    </div>
+  );
+}
+
+return (
     <div style={{padding: "20px", backgroundColor: "#111", color: "#eee", minHeight: "100vh"}}>
       <div style={{textAlign: "right"}}>
         <button onClick={handleLogout} style={{padding: "6px 12px", backgroundColor: "#eee", color: "#000", borderRadius: "4px", border: "none", cursor: "pointer"}}>Выйти</button>
